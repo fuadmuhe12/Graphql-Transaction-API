@@ -19,7 +19,6 @@ const transactionTypeDef = `#graphql
         deleteTransaction(transactionId: ID!): Transaction
     }
     input createTransactionInput {
-        userId: ID!
         description: String!
         paymentType: String!
         category: String!
