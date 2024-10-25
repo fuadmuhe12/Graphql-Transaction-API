@@ -1,10 +1,12 @@
 import User from './../../model/user.model.js';
+import Transaction from '../../model/transaction.model.js';
 import bcrypt from 'bcryptjs';
 const userResolver = {
     Query: {
-        user: (_, { userId }) => {
+        user: async (_, { userId }) => {
             try {
-                const user = User.findById(userId);
+                const user = await User.findOne({ _id: userId })
+                console.log('user', user);
                 return user;
             } catch (error) {
                 console.log('Error in user', error);
@@ -99,6 +101,18 @@ const userResolver = {
             }
         }
 
+    },
+    User: {
+        transactions: async (parent) => {
+            try {
+                const userId = parent._id;
+                const transaction = await Transaction.find({ userId: userId });
+                return transaction;
+            } catch (error) {
+                console.error('Error in fetching transaction for user', error);
+                throw new Error(error);
+            }
+        }
     }
 }
 
